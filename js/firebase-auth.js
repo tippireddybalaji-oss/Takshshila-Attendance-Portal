@@ -4,7 +4,7 @@
 
 const FireAuth = (() => {
   const firebaseConfig = {
-    apiKey: "AIzaSyDmJ_cOyEnA90ctc9FU_jHnsZedN1J5Mtc",
+    apiKey: "IzaSyDvApXo4pS1PAFYSHlQss90v_F075CHJBg",
     authDomain: "takshashila-attendance.firebaseapp.com",
     projectId: "takshashila-attendance",
     storageBucket: "takshashila-attendance.firebasestorage.app",
