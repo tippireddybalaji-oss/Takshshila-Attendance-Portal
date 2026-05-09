@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Takshashila University Attendance Portal – Student, Faculty & Admin access.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <title>Takshashila Attendance Portal</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SPLASH SCREEN
+       ═══════════════════════════════════════════════════════ -->
+  <div id="splash-view" class="splash-screen">
+    <div class="splash-logo">
+      <img src="assets/logo.png" alt="Takshashila" onerror="this.style.display='none';this.parentElement.innerHTML='🏛️';">
+    </div>
+    <div class="splash-title">Takshashila</div>
+    <div class="splash-subtitle">University Attendance Portal</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ROLE SELECTION
+       ═══════════════════════════════════════════════════════ -->
+  <div id="role-view" style="display:none">
+    <div class="role-container">
+      <div class="role-header">
+        <div class="logo-small">
+          <img src="assets/logo.png" alt="Takshashila" onerror="this.style.display='none';this.parentElement.innerHTML='🏛️';">
+        </div>
+        <h1>Takshashila University</h1>
+        <p>Select your role to continue</p>
+      </div>
+
+      <div class="role-grid">
+        <div class="role-card" onclick="App.selectRole('student')">
+          <span class="role-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/><path d="M22 10v6"/>
+            </svg>
+          </span>
+          <div class="role-name">Student</div>
+          <div class="role-desc">View your attendance records & percentage</div>
+        </div>
+
+        <div class="role-card" onclick="App.selectRole('faculty')">
+          <span class="role-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </span>
+          <div class="role-name">Faculty</div>
+          <div class="role-desc">Mark & manage student attendance</div>
+        </div>
+
+        <div class="role-card" onclick="App.selectRole('admin')">
+          <span class="role-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </span>
+          <div class="role-name">Admin</div>
+          <div class="role-desc">System overview & management</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       LOGIN VIEW
+       ═══════════════════════════════════════════════════════ -->
+  <div id="login-view" style="display:none">
+    <div class="login-container">
+      <div class="card login-card">
+        <div class="logo-small" style="width:56px;height:56px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;overflow:hidden;box-shadow:0 0 20px var(--accent-glow)">
+          <img src="assets/logo.png" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.parentElement.innerHTML='🏛️';">
+        </div>
+        <div id="login-role-badge" class="login-role-badge">👨‍🏫 Faculty</div>
+        <h1>Sign In</h1>
+        <p class="subtitle">Takshashila University</p>
+
+        <!-- Auth Method Tabs -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-method="phone" onclick="App.switchAuthTab('phone')">Phone</button>
+          <button class="auth-tab" data-method="google" onclick="App.switchAuthTab('google')">Google</button>
+          <button class="auth-tab" data-method="email" onclick="App.switchAuthTab('email')">Email</button>
+        </div>
+
+        <!-- PHONE OTP -->
+        <div id="auth-phone" class="auth-panel" style="text-align:left">
+          <!-- Step 1: Enter phone -->
+          <div id="phone-step-1">
+            <div class="form-group">
+              <label class="form-label">Mobile Number</label>
+              <div style="display:flex;gap:8px">
+                <input class="form-input" value="+91" style="width:70px;text-align:center" disabled>
+                <input id="phone-number" class="form-input" type="tel" placeholder="9876543210" maxlength="10"
+                  onkeydown="if(event.key==='Enter')App.handleSendOTP()">
+              </div>
+            </div>
+            <button id="send-otp-btn" class="btn btn-primary" style="width:100%" onclick="App.handleSendOTP()">
+              Send OTP
+            </button>
+          </div>
+
+          <!-- Step 2: Enter OTP -->
+          <div id="phone-step-2" style="display:none">
+            <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px">
+              Enter the 6-digit code sent to <span id="otp-phone-display" style="color:var(--accent)"></span>
+            </p>
+            <div class="form-group">
+              <label class="form-label">Verification Code</label>
+              <input id="otp-code" class="form-input otp-input" type="text" placeholder="• • • • • •"
+                maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+                onkeydown="if(event.key==='Enter')App.handleVerifyOTP()">
+            </div>
+            <button id="verify-otp-btn" class="btn btn-primary" style="width:100%" onclick="App.handleVerifyOTP()">
+              Verify & Sign In
+            </button>
+            <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:8px" onclick="App.resetPhoneAuth()">
+              ← Change number
+            </button>
+          </div>
+        </div>
+
+        <!-- GOOGLE SIGN-IN -->
+        <div id="auth-google" class="auth-panel" style="display:none;text-align:center">
+          <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px">
+            Sign in with your Google account
+          </p>
+          <button id="google-signin-btn" class="btn btn-google" onclick="App.handleGoogleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.0 24.0 0 0 0 0 21.56l7.98-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            <span>Sign in with Google</span>
+          </button>
+        </div>
+
+        <!-- EMAIL / PASSWORD (fallback) -->
+        <div id="auth-email" class="auth-panel" style="display:none;text-align:left">
+          <!-- Student login fields -->
+          <div id="login-student-fields" style="display:none">
+            <div class="form-group">
+              <label class="form-label" for="login-student-id">Student ID</label>
+              <input id="login-student-id" class="form-input" type="text" placeholder="Enter your Student ID"
+                onkeydown="if(event.key==='Enter')App.handleEmailLogin()">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="login-student-pass">Password</label>
+              <input id="login-student-pass" class="form-input" type="password" placeholder="Enter your password"
+                onkeydown="if(event.key==='Enter')App.handleEmailLogin()">
+            </div>
+          </div>
+
+          <!-- Faculty / Admin login fields -->
+          <div id="login-faculty-fields">
+            <div class="form-group">
+              <label class="form-label" for="login-email">Email</label>
+              <input id="login-email" class="form-input" type="email" placeholder="Enter your email"
+                onkeydown="if(event.key==='Enter')App.handleEmailLogin()">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="login-password">Password (ID)</label>
+              <input id="login-password" class="form-input" type="password" placeholder="Enter your password"
+                onkeydown="if(event.key==='Enter')App.handleEmailLogin()">
+            </div>
+          </div>
+          <button id="email-login-btn" class="btn btn-primary" style="width:100%" onclick="App.handleEmailLogin()">
+            Sign In
+          </button>
+        </div>
+
+        <label class="form-check">
+          <input type="checkbox" id="remember-me" checked>
+          <span>Remember me</span>
+        </label>
+
+        <a class="login-back" onclick="App.showRoleSelect()">← Choose different role</a>
+      </div>
+    </div>
+    <!-- Invisible reCAPTCHA container -->
+    <div id="recaptcha-container"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP VIEW – STUDENT
+       ═══════════════════════════════════════════════════════ -->
+  <div id="student-view" style="display:none">
+    <div class="app-container">
+
+      <!-- Header -->
+      <header class="app-header">
+        <div class="logo">
+          <div class="logo-icon"><img src="assets/logo.png" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover" onerror="this.parentElement.textContent='🏛️'"></div>
+          <span>Takshashila University</span>
+        </div>
+        <div class="header-right">
+          <div class="user-badge">
+            <span id="student-name">Student</span>
+          </div>
+          <button class="btn-icon" onclick="App.navigateStudent('settings')" title="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Student Nav Tabs -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-sview="home" onclick="App.navigateStudent('home')">Home</button>
+        <button class="nav-tab" data-sview="attendance" onclick="App.navigateStudent('attendance')">Attendance</button>
+        <button class="nav-tab" data-sview="fees" onclick="App.navigateStudent('fees')">Fees</button>
+        <button class="nav-tab" data-sview="circulars" onclick="App.navigateStudent('circulars')">Circulars</button>
+        <button class="nav-tab" data-sview="timetable" onclick="App.navigateStudent('timetable')">Time Table</button>
+        <button class="nav-tab" data-sview="idcard" onclick="App.navigateStudent('idcard')">ID Card</button>
+      </nav>
+
+      <!-- ─── HOME ─── -->
+      <div id="student-home" class="view active">
+        <div class="student-greeting">
+          <h2 id="student-greeting-text">Hi, Student</h2>
+          <p id="student-info" style="color:var(--text-muted);font-size:0.85rem;margin-top:2px"></p>
+        </div>
+        <div id="home-quick-stats" class="stats-grid" style="margin-top:20px"></div>
+        <div class="card" style="margin-top:20px">
+          <div class="card-header"><h3 class="card-title">Quick Overview</h3></div>
+          <p style="color:var(--text-secondary);font-size:0.88rem;padding:8px 0">Select a tab above to view your attendance, fee details, circulars, timetable, or ID card.</p>
+        </div>
+      </div>
+
+      <!-- ─── ATTENDANCE ─── -->
+      <div id="student-attendance" class="view">
+        <div id="student-stats" class="stats-grid" style="margin-bottom:16px"></div>
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Subject-wise Attendance</h3></div>
+          <div id="student-subjects" class="stats-grid"></div>
+        </div>
+      </div>
+
+      <!-- ─── FEES ─── -->
+      <div id="student-fees" class="view">
+        <div id="fees-summary" class="stats-grid" style="margin-bottom:16px"></div>
+        <div class="auth-tabs" style="margin-bottom:16px">
+          <button class="auth-tab active" data-fee="breakdown" onclick="App.switchFeeTab('breakdown')">Fee Breakdown</button>
+          <button class="auth-tab" data-fee="history" onclick="App.switchFeeTab('history')">Payment History</button>
+        </div>
+        <div id="fee-breakdown-panel" class="card">
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Description</th><th>Amount</th><th>Due Date</th><th>Status</th></tr></thead>
+              <tbody id="fees-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="fee-history-panel" class="card" style="display:none">
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Method</th><th>Receipt</th></tr></thead>
+              <tbody id="fees-history-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── CIRCULARS ─── -->
+      <div id="student-circulars" class="view">
+        <div id="circulars-list"></div>
+      </div>
+
+      <!-- ─── TIMETABLE ─── -->
+      <div id="student-timetable" class="view">
+        <div class="card">
+          <div class="table-wrapper">
+            <table class="timetable">
+              <thead><tr><th>Time</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
+              <tbody id="timetable-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── ID CARD ─── -->
+      <div id="student-idcard" class="view">
+        <div class="id-card-wrapper">
+          <div class="id-card">
+            <div class="id-card-header">
+              <img src="assets/logo.png" alt="" class="id-card-logo" onerror="this.style.display='none'">
+              <div>
+                <div class="id-card-university">Takshashila University</div>
+                <div class="id-card-subtitle">Student Identity Card</div>
+              </div>
+            </div>
+            <div class="id-card-body">
+              <div class="id-card-avatar" id="id-card-avatar">S</div>
+              <div class="id-card-info">
+                <div class="id-card-name" id="id-card-name">–</div>
+                <div class="id-card-detail"><strong>ID:</strong> <span id="id-card-id">–</span></div>
+                <div class="id-card-detail"><strong>Dept:</strong> <span id="id-card-dept">–</span></div>
+                <div class="id-card-detail"><strong>Year:</strong> <span id="id-card-year">–</span> &nbsp; <strong>Section:</strong> <span id="id-card-section">–</span></div>
+              </div>
+            </div>
+            <div class="id-card-footer">
+              <span>Academic Year 2025–2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SETTINGS ─── -->
+      <div id="student-settings" class="view">
+        <!-- Profile Card -->
+        <div class="card" style="max-width:480px">
+          <div class="card-header"><h3 class="card-title">Profile</h3></div>
+          <div class="profile-section">
+            <div class="profile-avatar-wrapper">
+              <img id="student-profile-pic" class="profile-avatar" src="" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="profile-avatar-placeholder" id="student-avatar-placeholder">
+                <span id="student-avatar-initial">S</span>
+              </div>
+              <label class="profile-upload-btn" for="student-avatar-upload" title="Change profile picture">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </label>
+              <input type="file" id="student-avatar-upload" accept="image/*" style="display:none" onchange="App.handleAvatarUpload(this, 'student')">
+            </div>
+            <div class="profile-info">
+              <h4 id="profile-student-name" style="margin:0 0 4px 0;font-size:1rem">Student</h4>
+              <p id="profile-student-id" style="margin:0;font-size:0.82rem;color:var(--text-muted)"></p>
+              <p id="profile-student-dept" style="margin:4px 0 0 0;font-size:0.82rem;color:var(--text-muted)"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Card -->
+        <div class="card" style="max-width:480px;margin-top:16px">
+          <div class="card-header"><h3 class="card-title">Theme</h3></div>
+          <div class="theme-options">
+            <button class="theme-option" data-theme="light" onclick="App.selectTheme('light')">
+              <span class="theme-preview" style="background:#ffffff;border:1px solid #ddd"></span> Light
+            </button>
+            <button class="theme-option" data-theme="dark" onclick="App.selectTheme('dark')">
+              <span class="theme-preview" style="background:#1a1a2e"></span> Dark
+            </button>
+            <button class="theme-option" data-theme="warm" onclick="App.selectTheme('warm')">
+              <span class="theme-preview" style="background:#fdf6ec;border:1px solid #e8d5b5"></span> Warm
+            </button>
+          </div>
+          <button class="btn btn-secondary theme-save-btn" id="theme-save-btn" onclick="App.saveTheme()" disabled>Save Theme</button>
+        </div>
+
+        <!-- Sign Out -->
+        <div class="card" style="max-width:480px;margin-top:16px">
+          <button class="btn btn-primary" style="width:100%;background:var(--accent);border-color:var(--accent)" onclick="App.handleLogout()">Sign Out</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP VIEW – FACULTY (existing)
+       ═══════════════════════════════════════════════════════ -->
+  <div id="app-view" style="display:none">
+    <div class="app-container">
+
+      <header class="app-header">
+        <div class="logo">
+          <div class="logo-icon"><img src="assets/logo.png" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover" onerror="this.parentElement.textContent='📋'"></div>
+          <span>Takshashila Attendance</span>
+        </div>
+        <div class="header-right">
+          <div class="user-badge">
+            <span id="user-name">Faculty</span>
+          </div>
+          <button class="btn-icon" onclick="App.navigate('settings')" title="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-view="dashboard" onclick="App.navigate('dashboard')">Dashboard</button>
+        <button class="nav-tab" data-view="mark" onclick="App.navigate('mark')">Mark Single</button>
+        <button class="nav-tab" data-view="bulk" onclick="App.navigate('bulk')">Bulk Attendance</button>
+        <button class="nav-tab" data-view="records" onclick="App.navigate('records')">Records</button>
+        <button class="nav-tab" data-view="reports" onclick="App.navigate('reports')">Reports</button>
+        <button class="nav-tab" data-view="editreq" onclick="App.navigate('editreq')">Request Edit</button>
+      </nav>
+
+      <!-- Dashboard -->
+      <div id="view-dashboard" class="view active">
+        <h2 style="margin-bottom:20px">Welcome back!</h2>
+        <div id="dashboard-stats" class="stats-grid"></div>
+        <div class="card" style="margin-top:8px">
+          <div class="card-header"><h3 class="card-title">Your Courses – Today's Status</h3></div>
+          <div id="dashboard-courses"></div>
+        </div>
+      </div>
+
+      <!-- Mark Single -->
+      <div id="view-mark" class="view">
+        <div class="card" style="max-width:560px">
+          <div class="card-header"><h3 class="card-title">Mark Single Attendance</h3></div>
+          <div class="form-group">
+            <label class="form-label" for="mark-course">Course</label>
+            <select id="mark-course" class="form-select"></select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="mark-student">Student ID</label>
+              <input id="mark-student" class="form-input" placeholder="TU6241101110001"
+                onkeydown="if(event.key==='Enter')App.handleMarkSingle()">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="mark-status">Status</label>
+              <select id="mark-status" class="form-select">
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+                <option value="Late">Late</option>
+                <option value="O.D">O.D (On Duty)</option>
+              </select>
+            </div>
+          </div>
+          <button id="mark-btn" class="btn btn-primary" onclick="App.handleMarkSingle()">Submit</button>
+        </div>
+      </div>
+
+      <!-- Bulk Attendance -->
+      <div id="view-bulk" class="view">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Bulk Attendance</h3></div>
+          <div class="toolbar">
+            <select id="bulk-course" class="form-select" onchange="App.loadBulkStudents()"></select>
+            <button class="btn btn-secondary" onclick="App.loadBulkStudents()">Load Students</button>
+            <div style="flex:1"></div>
+            <button id="bulk-submit-btn" class="btn btn-primary" onclick="App.handleBulkSubmit()">Submit All</button>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px">
+            Click <strong>P</strong> (Present), <strong>A</strong> (Absent), <strong>L</strong> (Late), or <strong>OD</strong> (On Duty) for each student.
+          </p>
+          <div id="bulk-list" class="bulk-grid"></div>
+        </div>
+      </div>
+
+      <!-- Records -->
+      <div id="view-records" class="view">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Attendance Records</h3>
+            <span id="records-count" style="font-size:0.8rem;color:var(--text-muted)"></span>
+          </div>
+          <div class="toolbar">
+            <select id="records-course-filter" class="form-select" onchange="App.fetchRecords()">
+              <option value="">All Courses</option>
+            </select>
+            <input id="records-date-filter" class="form-input" type="date" onchange="App.fetchRecords()">
+            <button class="btn btn-secondary btn-sm" onclick="App.fetchRecords()">Refresh</button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Date</th><th>Course</th><th>Student ID</th><th>Faculty</th><th>Status</th></tr></thead>
+              <tbody id="records-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports -->
+      <div id="view-reports" class="view">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Course Report</h3></div>
+          <div class="toolbar">
+            <select id="report-course" class="form-select"></select>
+            <input id="report-start" class="form-input" type="date" title="Start date">
+            <input id="report-end" class="form-input" type="date" title="End date">
+            <button class="btn btn-primary btn-sm" onclick="App.generateReport()">Generate Report</button>
+          </div>
+          <div id="report-summary" class="stats-grid" style="margin-top:16px"></div>
+          <div id="report-content">
+            <div class="table-wrapper" style="margin-top:16px">
+              <table>
+                <thead><tr><th>Student ID</th><th>Name</th><th>Total</th><th>Present</th><th>Absent</th><th>Percentage</th></tr></thead>
+                <tbody id="report-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Request Edit -->
+      <div id="view-editreq" class="view">
+        <div class="card" style="max-width:680px">
+          <div class="card-header"><h3 class="card-title">Request Attendance Edit</h3></div>
+          <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:12px">
+            Select a date and course to browse records, then pick the student you want to request an edit for.
+            <br>You can only edit records from the <strong>last 7 days</strong>. Maximum <strong>5 active requests</strong> allowed.
+          </p>
+
+          <!-- Step 1: Date + Course picker -->
+          <div class="form-row" style="margin-bottom:12px">
+            <div class="form-group">
+              <label class="form-label" for="editreq-date">Date</label>
+              <input id="editreq-date" class="form-input" type="date" onchange="App.loadEditRecords()">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editreq-course">Course</label>
+              <select id="editreq-course" class="form-select" onchange="App.loadEditRecords()">
+                <option value="">All Courses</option>
+              </select>
+            </div>
+            <div class="form-group" style="display:flex;align-items:flex-end">
+              <button class="btn btn-secondary" onclick="App.loadEditRecords()">Search</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Student records list -->
+          <div id="editreq-records-container" style="display:none">
+            <h4 style="font-size:0.85rem;font-weight:600;margin-bottom:8px">Select a record to edit:</h4>
+            <div class="table-wrapper" style="max-height:260px;overflow-y:auto">
+              <table>
+                <thead><tr><th>Student ID</th><th>Student Name</th><th>Status</th><th>Select</th></tr></thead>
+                <tbody id="editreq-records-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Step 3: Edit form (appears after selecting a record) -->
+          <div id="editreq-form-section" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+            <p id="editreq-selected-info" style="font-size:0.85rem;margin-bottom:12px;font-weight:600"></p>
+            <input type="hidden" id="editreq-row" value="">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="editreq-status">New Status</label>
+                <select id="editreq-status" class="form-select">
+                  <option value="Present">Present</option>
+                  <option value="Absent">Absent</option>
+                  <option value="Late">Late</option>
+                  <option value="O.D">O.D (On Duty)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editreq-reason">Reason for edit (min 20 characters)</label>
+              <textarea id="editreq-reason" class="form-input" rows="3" placeholder="Explain why this attendance record needs to be changed..." style="resize:vertical"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="App.handleSubmitEditRequest()">Submit Request</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-header"><h3 class="card-title">My Request History</h3></div>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Student</th><th>Change</th><th>Reason</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="my-requests-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div id="view-settings" class="view">
+        <!-- Profile Card -->
+        <div class="card" style="max-width:480px">
+          <div class="card-header"><h3 class="card-title">Profile</h3></div>
+          <div class="profile-section">
+            <div class="profile-avatar-wrapper">
+              <img id="faculty-profile-pic" class="profile-avatar" src="" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="profile-avatar-placeholder" id="faculty-avatar-placeholder">
+                <span id="faculty-avatar-initial">F</span>
+              </div>
+              <label class="profile-upload-btn" for="faculty-avatar-upload" title="Change profile picture">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </label>
+              <input type="file" id="faculty-avatar-upload" accept="image/*" style="display:none" onchange="App.handleAvatarUpload(this, 'faculty')">
+            </div>
+            <div class="profile-info">
+              <h4 id="profile-faculty-name" style="margin:0 0 4px 0;font-size:1rem">Faculty</h4>
+              <p id="profile-faculty-id" style="margin:0;font-size:0.82rem;color:var(--text-muted)"></p>
+              <p id="profile-faculty-dept" style="margin:4px 0 0 0;font-size:0.82rem;color:var(--text-muted)"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Card -->
+        <div class="card" style="max-width:480px;margin-top:16px">
+          <div class="card-header"><h3 class="card-title">Theme</h3></div>
+          <div class="theme-options">
+            <button class="theme-option" data-theme="light" onclick="App.selectTheme('light')">
+              <span class="theme-preview" style="background:#ffffff;border:1px solid #ddd"></span> Light
+            </button>
+            <button class="theme-option" data-theme="dark" onclick="App.selectTheme('dark')">
+              <span class="theme-preview" style="background:#1a1a2e"></span> Dark
+            </button>
+            <button class="theme-option" data-theme="warm" onclick="App.selectTheme('warm')">
+              <span class="theme-preview" style="background:#fdf6ec;border:1px solid #e8d5b5"></span> Warm
+            </button>
+          </div>
+          <button class="btn btn-secondary theme-save-btn" id="faculty-theme-save-btn" onclick="App.saveTheme()" disabled>Save Theme</button>
+        </div>
+
+        <!-- Sign Out -->
+        <div class="card" style="max-width:480px;margin-top:16px">
+          <button class="btn btn-primary" style="width:100%;background:var(--accent);border-color:var(--accent)" onclick="App.handleLogout()">Sign Out</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       APP VIEW – ADMIN
+       ═══════════════════════════════════════════════════════ -->
+  <div id="admin-view" style="display:none">
+    <div class="app-container">
+      <header class="app-header">
+        <div class="logo">
+          <div class="logo-icon"><img src="assets/logo.png" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover" onerror="this.parentElement.textContent='🛡️'"></div>
+          <span>Admin Panel</span>
+        </div>
+        <div class="header-right">
+          <div class="user-badge">
+            <span id="admin-name">Admin</span>
+          </div>
+          <button class="btn-icon" onclick="App.navigateAdmin('admin-settings')" title="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-view="admin-overview" onclick="App.navigateAdmin('admin-overview')">Overview</button>
+        <button class="nav-tab" data-view="admin-requests" onclick="App.navigateAdmin('admin-requests')">
+          Edit Requests <span id="pending-badge" class="pending-count-badge" style="display:none">0</span>
+        </button>
+        <button class="nav-tab" data-view="admin-honor" onclick="App.navigateAdmin('admin-honor')">Honor Scores</button>
+      </nav>
+
+      <!-- Overview -->
+      <div id="view-admin-overview" class="view active">
+        <h2 style="margin-bottom:20px">System Overview</h2>
+        <div id="admin-stats" class="stats-grid"></div>
+        <div class="card" style="margin-top:8px">
+          <div class="card-header"><h3 class="card-title">Today's Activity</h3></div>
+          <div id="admin-activity"></div>
+        </div>
+      </div>
+
+      <!-- Edit Requests -->
+      <div id="view-admin-requests" class="view">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Pending Edit Requests</h3>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="admin-req-filter" class="form-select" style="width:auto" onchange="App.loadEditRequests()">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Denied">Denied</option>
+                <option value="all">All</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" onclick="App.loadEditRequests()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Faculty</th>
+                  <th>Record</th>
+                  <th>Change</th>
+                  <th>Reason</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-requests-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Honor Scores -->
+      <div id="view-admin-honor" class="view">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Faculty Honor Scores</h3>
+            <button class="btn btn-secondary btn-sm" onclick="App.loadHonorScores()">Refresh</button>
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:16px">
+            Honor scores track faculty editing behavior. Excessive attendance edits reduce the score.
+            Scores range from 0 (critical) to 100 (perfect).
+          </p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Faculty ID</th>
+                  <th>Name</th>
+                  <th>Honor Score</th>
+                  <th>Total Edits</th>
+                  <th>Last Updated</th>
+                </tr>
+              </thead>
+              <tbody id="admin-honor-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Settings -->
+      <div id="view-admin-settings" class="view">
+        <!-- Profile Card -->
+        <div class="card" style="max-width:480px">
+          <div class="card-header"><h3 class="card-title">Profile</h3></div>
+          <div class="profile-section">
+            <div class="profile-avatar-wrapper">
+              <img id="admin-profile-pic" class="profile-avatar" src="" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="profile-avatar-placeholder" id="admin-avatar-placeholder">
+                <span id="admin-avatar-initial">A</span>
+              </div>
+              <label class="profile-upload-btn" for="admin-avatar-upload" title="Change profile picture">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </label>
+              <input type="file" id="admin-avatar-upload" accept="image/*" style="display:none" onchange="App.handleAvatarUpload(this, 'admin')">
+            </div>
+            <div class="profile-info">
+              <h4 id="profile-admin-name" style="margin:0 0 4px 0;font-size:1rem">Admin</h4>
+              <p id="profile-admin-id" style="margin:0;font-size:0.82rem;color:var(--text-muted)"></p>
+              <p id="profile-admin-dept" style="margin:4px 0 0 0;font-size:0.82rem;color:var(--text-muted)"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Card -->
+        <div class="card" style="max-width:480px;margin-top:16px">
+          <div class="card-header"><h3 class="card-title">Theme</h3></div>
+          <div class="theme-options">
+            <button class="theme-option" data-theme="light" onclick="App.selectTheme('light')">
+              <span class="theme-preview" style="background:#ffffff;border:1px solid #ddd"></span> Light
+            </button>
+            <button class="theme-option" data-theme="dark" onclick="App.selectTheme('dark')">
+              <span class="theme-preview" style="background:#1a1a2e"></span> Dark
+            </button>
+            <button class="theme-option" data-theme="warm" onclick="App.selectTheme('warm')">
+              <span class="theme-preview" style="background:#fdf6ec;border:1px solid #e8d5b5"></span> Warm
+            </button>
+          </div>
+          <button class="btn btn-secondary theme-save-btn" id="admin-theme-save-btn" onclick="App.saveTheme()" disabled>Save Theme</button>
+        </div>
+
+        <!-- Sign Out -->
+        <div class="card" style="max-width:480px;margin-top:16px">
+          <button class="btn btn-primary" style="width:100%;background:var(--accent);border-color:var(--accent)" onclick="App.handleLogout()">Sign Out</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/firebase-auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
